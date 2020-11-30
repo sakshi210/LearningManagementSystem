@@ -13,23 +13,26 @@
 <html>
     <head>
         <title> LMS </title>
+        
+        <?php include 'segments/bootstrap.php' ?>
+
+        <style>
+            .card a:hover {
+                text-decoration: none;
+            }
+        </style>
     </head>
     <body>
-        <h1> Teacher Portal </h1>
-        <h2>Classes</h2>
-        <div id='class_list'>
+        <?php include 'segments/navbar.php' ?>
+    
+        <div class="container my-4">
+            <div id='class_list' class="row">
+            </div>
         </div>
 
 
         <!-- Check Functionality -->
-        <form action="api/create_class.php" method="POST">
-            <h2> Create Class </h2>
-            Name: <input type="text" name="name"><br>
-            Subject Code: <input type="text" name="subcode"><br>
-            <input type="submit" name="submit" value="Create Class">
-        </form>
-
-        <form action="api/add_student_class.php" method="POST">
+        <!-- <form action="api/add_student_class.php" method="POST">
             <h2> Add Student To Class </h2>
             Student Reg no: <input type="text" name="sregno"><br>
             Class Id: <input type="text" name="classid"><br>
@@ -48,11 +51,39 @@
             Title: <input type="text" name="title"><br>
             Description: <input type="text" name="description"><br>
             <input type="submit" name="submit" value="Add Post">
-        </form>
+        </form> -->
     </body>
 
     <script>
         class_list = document.getElementById('class_list');
+        color_index = 0
+
+        colors = ["red", "green", "black", "orange"]
+
+        function getColor() {
+            color_index += 1
+            return colors[color_index % colors.length]
+        }
+
+        function create_class_card(class_info) {
+            ele = document.createElement("div")
+            ele.className = "col-sm-4 my-2"
+            html_string = `
+                    <div class="card">
+                        <a href="/lms/class.php?classid=${class_info[0]}">
+                        <div class="card-header" style="background-color: ${getColor()}">
+                            <h3 class="text-light mb-5">${class_info[1]}</h3>
+                            <span class="text-light mt-2">${class_info[2]}</span>
+                        </div>
+                        </a>
+                        <div class="card-body">
+                            <p class="card-text">Dr Jagdish Makhijani</p>
+                        </div>
+                    </div>
+            `
+            ele.innerHTML = html_string.trim()
+            return ele;
+        } 
 
         function load_classes() {
             var xhttp = new XMLHttpRequest();
@@ -61,11 +92,7 @@
                     classes = JSON.parse(this.responseText);
                     console.log(classes);
                     classes.forEach(element => {
-                        console.log(element[1])
-                        ele = document.createElement("span")
-                        ele.innerText = element[0] + ": " + element[1];
-                        class_list.appendChild(ele)
-                        class_list.appendChild(document.createElement("br"))
+                        class_list.appendChild(create_class_card(element))
                     });
                 }
             }

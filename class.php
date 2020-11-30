@@ -29,6 +29,11 @@
 <html>
     <head>
         <title> LMS </title>
+        <style>
+            .post {
+                background-color: green;
+            }
+        </style>
     </head>
     <body>
         <h1> Class: <?php echo $class_name ?></h1>
@@ -51,10 +56,15 @@
                     console.log(classes);
                     classes.forEach(element => {
                         console.log(element[1])
-                        ele = document.createElement("span")
-                        ele.innerText = element[0] + ":: " + element[1];
+                        ele = document.createElement("div")
+                        ele.className = "post"
+                        html_string = `
+                            <h3>${element[0]}</h3>
+                            <p>${element[1]}</p>
+                        `
+                        ele.innerHTML = html_string.trim()
                         post_list.appendChild(ele)
-                        post_list.appendChild(document.createElement("br"))
+                        // post_list.appendChild(document.createElement("br"))
                     });
                 }
             }

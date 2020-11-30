@@ -11,9 +11,9 @@
     }
 
     if ($type == "1") {
-        $sql = "SELECT classid, name from classes inner join (SELECT classid from class_students WHERE sregno='$regno') t2 on classes.classid=t2.classid";
+        $sql = "SELECT classid, name, subcode from classes inner join (SELECT classid from class_students WHERE sregno='$regno') t2 on classes.classid=t2.classid";
     } else if ($type == "2") {
-        $sql = "SELECT classid, name from classes where teacher='$regno'";
+        $sql = "SELECT classid, name, subcode from classes where teacher='$regno'";
     }
 
     $result = $conn->query($sql);
@@ -31,7 +31,7 @@
 
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            array_push($res_array, array($row['classid'], $row['name']));
+            array_push($res_array, array($row['classid'], $row['name'], $row['subcode']));
         }
     }
 
